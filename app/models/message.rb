@@ -15,11 +15,14 @@ class Message
 
     raise "number not known" if phone.nil?
 
+    codes = []
+
     blowerio = RestClient::Resource.new(ENV['BLOWERIO_URL'])
     response = blowerio['/messages'].post(:to => phone, :message => hourly )
     codes << response.code
-    #response = blowerio['/messages'].post(:to => phone, :message => daily )
-    #codes << response.code
+    response = blowerio['/messages'].post(:to => phone, :message => daily )
+    codes << response.code
+    
     codes
   end
 end
