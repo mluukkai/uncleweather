@@ -30,7 +30,8 @@ class Weather
     wind = hash['ws']
     wind_d = hash['wn']
     weather = hash['s']
-    "#{wday(date.wday)}: #{min} #{max} #{wind_d} #{wind} #{to_s(weather)}"
+    precipitation = hash['p']
+    "#{wday(date.wday)}: #{min} #{max} #{wind_d}#{wind} #{precipitation}"
   end
 
   def hour(hash)
