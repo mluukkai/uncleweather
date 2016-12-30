@@ -5,7 +5,7 @@ class WeatherController < ApplicationController
   end
 
   def sms
-    responses = Message.to(:mluukkai)
+    responses = { error: "not available" } #Message.to(:mluukkai)
     render json: responses
   end
 end
