@@ -1,7 +1,9 @@
 class Weather
+  def self.for(location)
+     Weather.new(location[:lon], location[:lat]).get
+  end
+
   def initialize(lon, lat)
-    lon = 28.4668
-    lat = 68.4761
     @url = "http://apitest.foreca.net/?lon=#{lon}&lat=#{lat}&key=trsuGNYwg279VmPrSdwhbOCqnU&format=json"
   end
 
