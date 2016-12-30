@@ -3,6 +3,14 @@ class Weather
      Weather.new(location[:lon], location[:lat]).get
   end
 
+  def self.hourly_for(location)
+     Weather.new(location[:lon], location[:lat]).get_hourly
+  end
+
+  def self.daily_for(location)
+     Weather.new(location[:lon], location[:lat]).get_daily
+  end
+
   def initialize(lon, lat)
     @url = "http://apitest.foreca.net/?lon=#{lon}&lat=#{lat}&key=trsuGNYwg279VmPrSdwhbOCqnU&format=json"
   end
@@ -10,6 +18,16 @@ class Weather
   def get
     resp = HTTParty.get(@url)
     parse JSON.parse(resp.parsed_response)
+  end
+
+  def get_daily
+    resp = HTTParty.get(@url)
+    daily(JSON.parse(resp.parsed_response)['fcd'])
+  end
+
+  def get_hourly
+    resp = HTTParty.get(@url)
+    hourly(JSON.parse(resp.parsed_response)['fch'])
   end
 
   def parse(hash)
