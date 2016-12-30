@@ -11,12 +11,18 @@ class Weather
   end
 
   def parse(hash)
-    #hourly hash['fch']
-    daily hash['fcd']
+    h = hourly(hash['fch'])
+    d = daily(hash['fcd'])
+    "#{h} #{d}"
   end
 
   def hourly(hours)
-    hours.map{ |h| hour(h) }
+    hours = hours.map{ |h| hour(h) }[0..23]
+    hour_strings = []
+    0.upto(7).each do |i| 
+      hour_strings << hours_average(hours[i*3, 3])
+    end
+    hour_strings.join(' ')
   end
 
   def daily(days)
@@ -35,7 +41,25 @@ class Weather
   end
 
   def hour(hash)
-    
+    time = Time.parse(hash['dt'])
+    {
+      hour: time.hour,
+      day: time.day,
+      t: hash['t'],
+      ws: hash['ws'],
+      wn: hash['wn'],
+      p: hash['p']
+    }
+  end
+
+  def hours_average(hours)
+    from = hours.first[:hour]
+    to = hours.last[:hour]
+    temps = hours.map{ |h| h[:t] }
+    ws = hours.map{ |h| h[:ws] }.max
+    wd = hours.map{ |h| h[:wn] }[1]
+    p = hours.map{ |h| h[:p] }.sum
+    "#{from}-#{to}: #{temps.min} #{temps.max} #{wd}#{ws} #{p}"
   end
 
   def to_s(weather)
