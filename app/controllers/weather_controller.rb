@@ -5,8 +5,8 @@ class WeatherController < ApplicationController
   end
 
   def sms
-    client = EasySMS::Client.new
-    resp = client.messages.create(to: '+358405477215', body: 'Hello from Easy SMS Add-on for Heroku.')
-    render text: resp.inspect
+    blowerio = RestClient::Resource.new(ENV['BLOWERIO_URL'])
+    response = blowerio['/messages'].post(:to => '+358405477215', :message => 'Hello from Blower.io')
+    render text: response.code
   end
 end
