@@ -22,6 +22,7 @@ class Message
 
     blowerio = RestClient::Resource.new(ENV['BLOWERIO_URL'])
     response = blowerio['/messages'].post(:to => phone, :message => hourly )
+    puts response.body
     codes << response.code
     response = blowerio['/messages'].post(:to => phone, :message => daily )
     codes << response.code
