@@ -12,7 +12,8 @@ class Weather
   end
 
   def initialize(lon, lat)
-    @url = "http://apitest.foreca.net/?lon=#{lon}&lat=#{lat}&key=trsuGNYwg279VmPrSdwhbOCqnU&format=json"
+    key = ENV['FORECA_KEY']
+    @url = "http://apitest.foreca.net/?lon=#{lon}&lat=#{lat}&key=#{key}&format=json"
   end
 
   def get

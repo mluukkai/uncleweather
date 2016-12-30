@@ -1,8 +1,8 @@
 class Message
   def self.numbers(whom)
     {
-      eno: '+358505377055',
-      mluukkai: '+358405477215'
+      eno: ENV['ENO'],
+      mluukkai: ENV['MLUUKKAI']
     }
   end
 
