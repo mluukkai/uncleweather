@@ -6,7 +6,6 @@ class WeatherController < ApplicationController
 
   def sms
     responses = Message.to(:mluukkai)
-
     render json: responses
   end
 end

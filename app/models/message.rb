@@ -1,5 +1,5 @@
 class Message
-  def self.numbers(whom)
+  def self.numbers
     {
       eno: ENV['ENO'],
       mluukkai: ENV['MLUUKKAI']
