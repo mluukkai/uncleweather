@@ -21,6 +21,10 @@ class Message
     puts "#{hourly.length} #{daily.length}"
 
     blowerio = RestClient::Resource.new(ENV['BLOWERIO_URL'])
+    response = blowerio['/messages'].post :to => '+358405477215', :message => hourly
+    puts response.body
+
+    blowerio = RestClient::Resource.new(ENV['BLOWERIO_URL'])
     response = blowerio['/messages'].post(:to => phone, :message => hourly )
     puts response.body
     codes << response.code
