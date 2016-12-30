@@ -3,7 +3,7 @@ class Message
     {
       eno: '+358505377055',
       mluukkai: '+358405477215'
-    }[whom]
+    }
   end
 
   def self.to(whom)
