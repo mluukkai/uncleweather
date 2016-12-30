@@ -29,11 +29,21 @@ class Weather
     min = hash['tn']
     wind = hash['ws']
     wind_d = hash['wn']
-    "#{wday(date.wday)}: #{min} #{max} #{wind_d} #{wind}"
+    weather = hash['s']
+    "#{wday(date.wday)}: #{min} #{max} #{wind_d} #{wind} #{to_s(weather)}"
   end
 
   def hour(hash)
     
+  end
+
+  def to_s(weather)
+    clouds = weather[1]
+    precipitation = weather[2].to_i
+    type = weather[3].to_i
+    return "" if precipitation==0
+    return "lumi" if precipitation<3
+    "paljon lunta"
   end
 
   def wday(n)
