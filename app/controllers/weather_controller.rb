@@ -5,18 +5,8 @@ class WeatherController < ApplicationController
   end
 
   def sms
-    location = Location.of Date.current 
-    hourly = Weather.hourly_for(location)[0..158]
-    daily = Weather.daily_for(location)[0..158]
+    responses = Message.to(:mluukkai)
 
-    mluukkai = '+358405477215'
-    eno = '+358505377055'
-    phone = mluukkai
-
-    blowerio = RestClient::Resource.new(ENV['BLOWERIO_URL'])
-    response1 = blowerio['/messages'].post(:to => phone, :message => hourly )
-    response2 = blowerio['/messages'].post(:to => phone, :message => daily )
-
-    render json: [ response1.code, response2.code ]
+    render json: responses
   end
 end
