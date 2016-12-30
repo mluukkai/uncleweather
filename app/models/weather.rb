@@ -56,7 +56,7 @@ class Weather
     from = hours.first[:hour]
     to = hours.last[:hour]
     temps = hours.map{ |h| h[:t] }
-    ws = hours.map{ |h| h[:ws] }.max
+    ws = hours.map{ |h| h[:ws] }.max+1
     wd = hours.map{ |h| h[:wn] }[1]
     p = hours.map{ |h| h[:p] }.sum
     "#{from}-#{to}: #{temps.min} #{temps.max} #{wd}#{ws} #{p}"
