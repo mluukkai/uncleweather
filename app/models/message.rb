@@ -14,7 +14,6 @@ class Message
 
     phone = numbers[whom]
 
-    byebug
     raise "number not known" if phone.nil?
 
     codes = []
