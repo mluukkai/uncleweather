@@ -8,20 +8,23 @@ class Message
 
   def self.to(whom)
     location = Location.of Date.current 
-    hourly = Weather.hourly_for(location)[0..150]
-    daily = Weather.daily_for(location)[0..150]
+    today = Weather.today_for(location)[0..158]
+    tomorrow = Weather.tomorrow_for(location)[0..158]
+    week = Weather.week_for(location)[0..158]
 
     phone = numbers[whom]
 
+    byebug
     raise "number not known" if phone.nil?
 
     codes = []
 
     blowerio = RestClient::Resource.new(ENV['BLOWERIO_URL'])
-    response = blowerio['/messages'].post(:to => phone, :message => hourly )
-    puts response.body
+    response = blowerio['/messages'].post(:to => phone, :message => today )
     codes << response.code
-    response = blowerio['/messages'].post(:to => phone, :message => daily )
+    response = blowerio['/messages'].post(:to => phone, :message => tomorrow )  
+    codes << response.code
+    response = blowerio['/messages'].post(:to => phone, :message => week )
     codes << response.code
     
     codes

@@ -1,24 +1,19 @@
 class Weather
-  def self.for(location)
-     Weather.new(location[:lon], location[:lat]).get
-  end
-
-  def self.hourly_for(location)
+  def self.today_for(location)
      Weather.new(location[:lon], location[:lat]).get_hourly
   end
 
-  def self.daily_for(location)
+  def self.tomorrow_for(location)
+     Weather.new(location[:lon], location[:lat]).get_hourly_tomorrow
+  end
+
+  def self.week_for(location)
      Weather.new(location[:lon], location[:lat]).get_daily
   end
 
   def initialize(lon, lat)
     key = ENV['FORECA_KEY']
     @url = "http://apitest.foreca.net/?lon=#{lon}&lat=#{lat}&key=#{key}&format=json"
-  end
-
-  def get
-    resp = HTTParty.get(@url)
-    parse JSON.parse(resp.parsed_response)
   end
 
   def get_daily
@@ -28,20 +23,32 @@ class Weather
 
   def get_hourly
     resp = HTTParty.get(@url)
-    hourly(JSON.parse(resp.parsed_response)['fch'])
+    hourly_today(JSON.parse(resp.parsed_response)['fch'])
   end
 
-  def parse(hash)
-    h = hourly(hash['fch'])
-    d = daily(hash['fcd'])
-    "#{h} #{d}"
+  def get_hourly_tomorrow
+    resp = HTTParty.get(@url)
+    hourly = hourly_tomorrow(JSON.parse(resp.parsed_response)['fch'])
+    date = wday(Time.now.wday+1) 
+    "#{date}: #{hourly}"
   end
 
-  def hourly(hours)
-    hours = hours.map{ |h| hour(h) }[0..23]
+  def hourly_today(hours)
+    hourly(hours, 0, 3)
+  end
+
+  def hourly_tomorrow(hours)
+    hourly(hours, 24, 4)
+  end
+
+  def hourly(hours, starts, gran)
+    to = 24/gran-1
+    ends = starts+23 
+
+    hours = hours.map{ |h| hour(h) }[starts..ends]
     hour_strings = []
-    0.upto(7).each do |i| 
-      hour_strings << hours_average(hours[i*3, 3])
+    0.upto(to).each do |i| 
+      hour_strings << hours_average(hours[i*gran, gran])
     end
     hour_strings.join(' ')
   end
@@ -81,15 +88,6 @@ class Weather
     wd = hours.map{ |h| h[:wn] }[1]
     p = hours.map{ |h| h[:p] }.sum.round(1)
     "#{from}-#{to}: #{temps.min} #{temps.max} #{wd}#{ws} #{p}"
-  end
-
-  def to_s(weather)
-    clouds = weather[1]
-    precipitation = weather[2].to_i
-    type = weather[3].to_i
-    return "" if precipitation==0
-    return "lumi" if precipitation<3
-    "paljon lunta"
   end
 
   def wday(n)

@@ -1,7 +1,11 @@
 class WeatherController < ApplicationController
   def index
     location = Location.of Date.current 
-    render json: Weather.for(location)
+    hourly = Weather.today_for(location)[0..158]
+    tomorrow = Weather.tomorrow_for(location)[0..158]
+    daily = Weather.week_for(location)[0..158]
+
+    render json: "#{hourly}\n#{tomorrow}\n#{daily}"
   end
 
   def sms
