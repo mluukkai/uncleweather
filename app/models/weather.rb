@@ -54,7 +54,7 @@ class Weather
   end
 
   def daily(days)
-    days[1..7].map{ |d| day(d) }.join(' ')
+    days[2..7].map{ |d| day(d) }.join(' ')
   end  
 
   def day(hash)
