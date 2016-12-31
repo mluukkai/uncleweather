@@ -29,8 +29,7 @@ class Weather
   def get_hourly_tomorrow
     resp = HTTParty.get(@url)
     hourly = hourly_tomorrow(JSON.parse(resp.parsed_response)['fch'])
-    byebug
-    date = wday(Time.now.wday+1) 
+    date = wday((Time.now+1.day).wday)
     "#{date}: #{hourly}"
   end
 
