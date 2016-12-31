@@ -87,6 +87,11 @@ class Weather
     ws = hours.map{ |h| h[:ws] }.max
     wd = hours.map{ |h| h[:wn] }[1]
     p = hours.map{ |h| h[:p] }.sum.round(1)
+    if p==0
+      p = '0'
+    elsif p<1
+      p = p.to_s[1..-1]
+    end
     "#{from}-#{to}: #{temps.min} #{temps.max} #{wd}#{ws} #{p}"
   end
 
