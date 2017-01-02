@@ -26,6 +26,10 @@ class Message
     response = blowerio['/messages'].post(:to => phone, :message => week )
     codes << response.code
     
+    puts "DEBUG #{today}"
+    puts "DEBUG #{tomorrow}"
+    puts "DEBUG #{week}"
+
     codes
   end
 end
